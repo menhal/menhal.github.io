@@ -25,9 +25,17 @@ body {
 
 .container {
   margin: 0 auto;
-  max-width: 740px;
+  max-width: 960px;
   padding: 0 10px;
   width: 100%;
+}
+
+aside{
+    float:left;
+    width:200px;
+}
+.posts{
+    margin-left: 220px;
 }
 
 h1, h2, h3, h4, h5, h6 {
