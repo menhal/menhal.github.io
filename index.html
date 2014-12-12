@@ -1,69 +1,18 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>CSS学习笔记</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width">
-        <style>
-            body{font-size: 16px;color: rgb(51, 51, 51);}
-            pre{border: 1px #ccc solid; padding: 9px 14px; background: #f7f7f9}
-            h1,h2,h3,h4,h5,h6{margin-top: 20px;margin-bottom: 10px;font-family: 'Helvetica Neue', Helvetica, 'Microsoft Yahei', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;}
-            
-            h1{font-size: 36px; text-decoration: underline; text-align: center}
-            h2{font-size: 30px;}
-            h3{font-size: 24px;}
-            
-            p,li{font-size: 16px; margin-bottom: 1em;line-height: 1.75;}
-            .container{width: 960px; margin: auto}
-            .row2{font-size: 12px;line-height: 2em; height: 4em;overflow: hidden;}
-            .dot{font-size: 12px;line-height: 1.5em; height: 1.5em; white-space: nowrap;overflow: hidden; text-overflow:ellipsis; width: 400px}
-            .circle{border-radius: 50%; background-color: #aaa; border-radius: 50%; height: 100px; width: 100px}
-            .circle2{border-radius: 50%; background-color: #aaa; border-radius: 50%; height: 100px; width: 100px; border: 10px #eee solid; }
-            
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1><a href="readme.md">CSS学习笔记</a></h1>
-            
-            <h2>一. 技巧篇</h2>
-            <h3>固定2行文字</h3>
-            <p>限制高度是行高的两倍就能把内容区限制为两行.</p>
-            <pre>.row2{font-size: 12px;line-height: 2em; height: 4em;overflow: hidden;}</pre>
-            <div class="row2">你好,我是孟浩,来自中国!<br>你好,我是孟浩,来自中国!你好,我是孟浩,来自中国!你好,<br>我是孟浩,来自中国!你好,我是孟浩,来自中国!</div>
-            
-            
-            <h3>限制单行文本字数,超出部分省略</h3>
-            <pre>.dot{white-space: nowrap;overflow: hidden; text-overflow:ellipsis;}</pre>
-            <div class="dot">你好,我是孟浩,来自中国!你好,我是孟浩,来自中国!你好,我是孟浩,来自中国!你好,我是孟浩,来自中国!你好,我是孟浩,来自中国!</div>
-            
-            
-            <h3>CSS3圆形</h3>
-            <pre>.circle{border-radius: 50%; }</pre>
-            <div class="circle"></div>
-            
-            <h3>CSS3圆环</h3>
-            <pre>.circle{border-radius: 50%; border: 10px #eee solid;}</pre>
-            <div class="circle2"></div>
-            
-            
-            <h2>二. 总结篇</h2>
-            <ol>
-                <li>CSS的可维护性来自于CSS代码是否很好的映射了设计意图.</li>
-                <li>低分辨率下尽量少用图片轮转,一般的做法是在低分辨率下把轮转的图片展开成一列显示.</li>
-                <li>把页面上的每个元素当做可复用的组件来看待.</li>
-            </ol>
-            
-            
-            <h2>三. 兼容篇</h2>
-            <ol>
-                <li>
-                    绝对定位在IE6下有时回出问题,如果父元素没有固定宽度或高度那么位置会错乱,这时在父元素上加zoom:1就好了.
-                    <pre>.absolute{display:relative; zoom:1}</pre>
-                </li>
-            </ol>
-            
-            
-        </div>
-    </body>
-</html>
+---
+layout: default
+---
+
+<div class="posts">
+  {% for post in site.posts %}
+    <article class="post">    
+      
+      <h1><a href="{{ site.baseurl }}{{ post.url }}">{{ post.title }}</a></h1>
+
+      <div class="entry">
+        {{ post.content | truncatewords:40}}
+      </div>
+      
+      <a href="{{ site.baseurl }}{{ post.url }}" class="read-more">Read More</a>
+    </article>
+  {% endfor %}
+</div>
