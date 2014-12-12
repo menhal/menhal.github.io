@@ -1,6 +1,6 @@
 ---
 layout: post
-title: test-first-post
+title: 第一篇文章
 ---
 
 Next you can update your site name, avatar and other options using the _config.yml file in the root of your repository (shown below :point_down:).
