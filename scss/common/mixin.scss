@@ -1,0 +1,208 @@
+$col-num : 12;
+$break-points : (1560px, 40px), (1320px, 40px), (960px, 20px), (768px, 40px), (480px, 15px);
+$screen-num : length($break-points);
+@mixin responsive($device-index){
+
+  @if($device-index == 1){
+    @content;
+  } @else {
+    $bp-index : $device-index ;
+    @if($device-index <= $screen-num + 1) {
+      $bp-index : $bp-index - 1;
+    }
+    $device : nth($break-points, $bp-index);
+    $bp : nth($device, 1);
+    $sp : nth($device, 2);
+    @media (max-width: ($bp - 1)) {
+      @content;
+    }
+  }
+}
+
+
+/* 文本相关 */
+.dot{white-space: nowrap;overflow: hidden; text-overflow:ellipsis; _width: 100%;}
+
+.h6{font-size: 12px;}
+.h5{font-size: 14px;}
+.h4{font-size: 18px;}
+.h3{font-size: 24px;}
+.h2{font-size: 30px;}
+.h1{font-size: 36px;}
+
+.line-height-15{line-height: 1.5}
+.line-height-20{line-height: 2.0}
+.line-height-30{line-height: 3.0}
+
+.text-left{text-align: left;}
+.text-right{text-align: right;}
+.text-center{text-align: center; }
+.text-indent{text-indent: 2em}
+
+.bold{font-weight: bold;}
+
+@mixin yahei{font-family: 'Microsoft YaHei'; font-weight: normal;}
+@mixin songti{font-family: 'simsun'}
+@mixin heiti{font-family: "SimHei"}
+
+/* 定位相关 */
+@mixin clearfix{ &:after,&:before{content: " "; clear: both; display: table;}; zoom: 1; }
+.clearfix{ @include clearfix; }
+.clear{clear: both}
+
+.relative{position: relative}
+.absolute{position: absolute}
+@mixin center-block{display: block;margin-left: auto;margin-right: auto;}
+.nooverflow{overflow: hidden;}
+
+@mixin floatlist{
+  @include clearfix;
+  li {float: left;}
+}
+//所有文字链接鼠标滑过样式
+@mixin linkhover{&:hover{color: #00a5f3; text-decoration: none}  &:hover >span{color: #00a5f3; text-decoration: none}}
+.normallink{@include linkhover; background: url(img/dot.png) 0 center no-repeat; padding-left: 10px; .time{color: #666}}
+
+
+//两端对齐
+%justify{text-align: justify ;text-align-last:justify;}
+%justify:after{display:inline-block; width:100%;height:0;content:'';}
+%justify_block{display:inline-block; }
+
+/* 表格相关 */
+.ue_content {word-break: break-all;}
+.ue_content table{width: 100%; max-width: 100%;}
+.ue_content img{_width: auto}
+.table-responsive{min-height: .01%;overflow-x: auto;}
+.table-responsive>.table>thead>tr>th, .table-responsive>.table>tbody>tr>th, .table-responsive>.table>tfoot>tr>th, .table-responsive>.table>thead>tr>td, .table-responsive>.table>tbody>tr>td, .table-responsive>.table>tfoot>tr>td{
+  white-space: nowrap;
+}
+/*50%宽度*/
+.half{float:left; width: 50%; .lt-ie8 &{width: 49%}}
+
+/*图片鼠标滑过遮罩*/
+.coverbox:hover .cover{opacity: 0.8; filter: alpha(opacity=80); .ie8 &{display: block}}
+.coverbox .boxcontainer{position: relative}
+.coverbox .cover{.ie8 &{display: none} position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #2854a1; color: #fff; opacity: 0; filter: alpha(opacity=0); cursor: pointer; transition: opacity 0.5s; _display:none;}
+.coverbox .cover span{border: 2px #fff solid; padding: 3px 20px; position: absolute; top: 50%; margin-top: -12px; left: 50%; margin-left: -34px;}
+
+/*更多链接*/
+.more{@include songti; @include linkhover}
+
+//带时间的新闻列表项,单行显示,自动截断
+@mixin newslistitem{padding-left: 10px; position: relative; padding-right: 90px; overflow: hidden;zoom: 1; text-overflow: ellipsis; white-space: nowrap; background: url(img/dot.png) 0 16px no-repeat;
+  @include responsive(6){padding-right: 0}
+
+  span{position: absolute; right: 0; top: 50%; margin-top: -1.25em; .lt-ie8 &{background: #fff; padding-left: 20px;}
+    @include responsive(6){display: none}
+  }
+}
+
+
+@mixin h1-formart{font-size: 28px; font-family: 'Microsoft YaHei'; font-weight: normal; color: #000;
+  @include responsive(5){font-size: 20px;}
+}
+/*首页栏目块标题样式*/
+@mixin category-title1{ color: #003262; font-size: 18px; @include yahei;font-weight: normal;
+  @include responsive(5){ font-size: 18px; }
+  @include responsive(6){ font-size: 16px; }
+}
+/* 内容页标题 */
+@mixin content-title1{ font-size: 22px;@include yahei;line-height: 28px;
+  @include responsive(6){text-align: justify; font-size: 16px;}
+}
+//学习中心列表
+%card-list h1, %card-list h1{margin-top: 10px; @include h1-formart;
+  @include responsive(5){margin-bottom: 60px;}
+}
+
+%card-list h2 {color: #0055aa; text-align: center; border-top: 4px #ccc double; &:first-of-type{margin-top: 100px;}}
+%card-list h2 span{padding: 0 20px; background-color: #fff;position: relative; top: -0.85em; font-size: 24px; @include yahei;
+  @include responsive(6){font-size: 16px;}
+}
+
+%card-list .item{background-color: #0055aa; height: 280px; position: relative; overflow: hidden; margin-bottom: 50px;
+  @include responsive(5){margin-bottom: 20px;}
+}
+%card-list .item a{&,&:active,&:hover{color: #fff; text-decoration: none;} padding: 30px; display: block; height: 100%;}
+%card-list .item h3{text-align: center; font-size: 18px; @include yahei; margin: 0; @extend .dot;
+  @include responsive(4){font-size: 18px;}
+}
+%card-list .item p{font-size: 14px; text-indent: -3em; padding-left: 3em;}
+%card-list .item .line{height: 3px; width: 50%; background: #fff; margin: 0 auto; margin-bottom: 20px; font-size: 0;}
+%card-list .item .addr{max-height: 6em; _height:6em; overflow: hidden}
+%card-list .item .tel{max-height: 3em; _height:3em; line-height: 1.5; overflow: hidden}
+
+.ie6 %card-list .item a:hover h3{text-decoration: underline}
+%card-list .item:hover .cover{opacity: 0.8; filter: alpha(opacity=80); .ie8 &{display: block}}
+%card-list .item .cover{.ie8 &{display: none} position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: #2854a1; color: #fff; opacity: 0; filter: alpha(opacity=0); cursor: pointer; transition: opacity 0.5s; _display:none;}
+%card-list .item .cover span{border: 2px #fff solid; padding: 10px 40px; position: absolute; top: 50%; margin-top: -21px; left: 50%; margin-left: -66px;}
+
+%card-list .open .item{background-color: #03a9f4}
+
+//课程介绍
+%intro-page .intro{margin-top: 30px;}
+%intro-page .intro h2{color: #0055aa; font-size: 36px; @include yahei; margin-top: 0; line-height: 1; margin-bottom: 30px;}
+
+%intro-page .intro .intro-left{position: relative; }
+%intro-page .intro .intro-right{position: relative; }
+
+%intro-page .intro .crumbs{padding-left: 24px; a{color: #555; &:active{color: #555;}} span{color: #999}
+  @include responsive(5){padding-left: 0}
+}
+%intro-page .intro .intro-left dt{color: #333; font-size: 22px; line-height: 1.2; margin:20px 0; @include yahei; border-left: 7px #3277ae solid; background: url("img/line.png") 0 center repeat-x;}
+%intro-page .intro .intro-left dt span{background-color: #fff; padding: 0 20px;font-size: 18px;
+  @include responsive(6){font-size: 14px;}
+}
+%intro-page .intro .intro-left dd{color: #555; line-height: 2; font-size: 14px; margin-left: 0;text-align: justify;  _zoom:1;}
+%intro-page .intro .intro-left dd .avator{float: right; margin-left: 20px; margin-bottom: 10px; .ie6 &{width: auto;}}
+
+%intro-page .intro .intro-course{display:block; position: relative; margin-right: 20px; cursor: pointer; zoom: 1; overflow: hidden; float: left; }
+%intro-page .intro .intro-course:hover{text-decoration: none; }
+%intro-page .intro .intro-course .cover{position: absolute; height: 1000px;  width: 100%; left: 0; top: 0; background: transparent; zoom: 1; transition: background-color 1s;}
+%intro-page .intro .intro-course .btn-play{position: absolute; width: 100%; left: 0; top: 50%; margin-top: -24px; font-size: 30px; text-align: center; @include heiti; color: #fff; line-height: 1}
+%intro-page .intro .intro-course .btn-play i{font-size: 48px; }
+%intro-page .intro .intro-course .btn-play span{margin-left: 10px; padding: 9px 0;}
+
+%intro-page .intro .intro-course:hover .cover{background-color:#000;filter: alpha(opacity=70);  background: rgba(0,0,0,0.7); }
+
+%intro-page .intro .float-bar{position: relative; bottom: auto;   padding-top: 30px;  }
+%intro-page dd .label{display:inline-block; width: 80px; }
+%intro-page .intro .intro-left .table{@include clearfix}
+%intro-page .intro .intro-left .table p{float: left;height: 28px; width: 340px; .lt-ie8 &{height: 50px;}
+  @include responsive(6){width: auto; float: none}
+}
+%intro-page .intro .intro-left .half{@include responsive(3){float: none;width: auto};}
+%intro-page .intro .intro-left .jiaoshi{padding-left: 110px; margin-right: 20px; height: 120px; margin-bottom: 20px; overflow: hidden; position: relative; }
+%intro-page .intro .intro-left .jiaoshi img{float:left; margin-left: -110px; width: 90px; max-width: none}
+%intro-page .intro .intro-left .jiaoshi h3{margin: 0; line-height: 2; @include songti}
+%intro-page .intro .intro-left .jiaoshi .text{position: absolute; bottom: 0}
+%intro-page .intro .intro-left .jiaoshi .text p{margin-bottom: 0; line-height: 1; margin-top: 15px;}
+%intro-page .intro .intro-left .lueying {@extend %justify;}
+%intro-page .intro .intro-left .lueying a{width:30%; @extend %justify_block; height:0; padding-bottom: 16.36363636363636%; overflow: hidden;}
+
+
+%intro-page .nf-backtotop {margin-left: 5px;background: #d5d5d5 url(img/backtotop.png) no-repeat; border-radius: 3px;height: 45px;width: 45px;cursor: pointer;opacity: 1; transition:all 0.3s;}
+%intro-page .nf-backtotop:hover{background-color: #b6b6b6;}
+%intro-page .backtotophide{opacity: 0; .lt-ie8 &{visibility: hidden}}
+
+%intro-page .xyjs-menu ol{list-style:none; font-size: 14px;}
+%intro-page .xyjs-menu i{display: block; list-style-position: inside;}
+%intro-page .xyjs-menu li{cursor: pointer;}
+%intro-page .xyjs-menu li:hover{text-decoration: underline; }
+%intro-page .xyjs-menu li, .xyjs-menu i{padding-left: 30px;height: 36px; line-height: 36px; background: url(img/liststyle.png) 0 -55px no-repeat}
+%intro-page .xyjs-menu .first{background-position: 0 0; list-style:none; height: 16px;}
+%intro-page .xyjs-menu .last{background-position: 0 -100px}
+%intro-page .xyjs-menu .current{background-position: 0 -20px; color: #3277ae; font-weight: bold}
+
+
+//弹出层
+%card-list .filter {position: absolute; right: 0; top: 60px; width: 500px; z-index: 1;
+  @include responsive(5){width: 100%;}
+}
+%card-list .filter .label{cursor: pointer; text-align: right; @include linkhover;
+  @include responsive(4){position: relative; top: -30px;}
+}
+%card-list .filter .label i{font-size: 12px; padding-right: 10px;}
+%card-list .filter .popup{position: relative; top:-35px; background-color: #fff; padding: 0 20px 50px 20px;  border: 1px #ccc solid; display: none}
+%card-list .filter .popup .close{position: absolute; top: 5px; right: 10px; font-size: 30px; cursor: pointer;}
