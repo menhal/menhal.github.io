@@ -41,7 +41,7 @@ $screen-num : length($break-points);
 
 .bold{font-weight: bold;}
 
-@mixin yahei{font-family: 'Microsoft YaHei'; font-weight: normal;}
+@mixin yahei{font-family: 'Microsoft YaHei';}
 @mixin songti{font-family: 'simsun'}
 @mixin heiti{font-family: "SimHei"}
 

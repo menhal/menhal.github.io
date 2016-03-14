@@ -15,6 +15,11 @@ gulp.task('html', function() {
         .pipe(browserSync.stream());
 });
 
+gulp.task('css',function(){
+    gulp.src('./css/*.css')
+        .pipe(browserSync.stream({match: "**/*.css"}));
+});
+
 gulp.task('sass', function () {
     gulp.src(['./sass/main.scss'])
         .pipe(sourcemaps.init())
@@ -27,7 +32,7 @@ gulp.task('sass', function () {
 gulp.task('watch', function () {
   gulp.watch(['*.html'], ['html']);
   gulp.watch(['css/*.css'], ['css']);
-  gulp.watch(['sass/*.scss'], ['sass']);
+  gulp.watch(['sass/**/*.scss'], ['sass']);
 });
 
 gulp.task('default', ['connect', 'watch']);
