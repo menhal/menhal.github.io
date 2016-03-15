@@ -35,4 +35,15 @@ gulp.task('watch', function () {
   gulp.watch(['sass/**/*.scss'], ['sass']);
 });
 
-gulp.task('default', ['connect', 'watch']);
+gulp.task('task', function() {
+    gulp.src('./*.html')
+        .pipe(browserSync.stream());
+});
+
+gulp.task('watch-task', function () {
+  gulp.watch(['tasks/**/*.html'], ['task']);
+  gulp.watch(['tasks/**/*.css'], ['task']);
+  gulp.watch(['tasks/**/*.js'], ['task']);
+});
+
+gulp.task('default', ['connect', 'watch', 'watch-task']);
