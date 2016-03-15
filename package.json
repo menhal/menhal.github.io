@@ -15,5 +15,12 @@
   "bugs": {
     "url": "https://github.com/menhal/menhal.github.io/issues"
   },
-  "homepage": "https://github.com/menhal/menhal.github.io#readme"
+  "homepage": "https://github.com/menhal/menhal.github.io#readme",
+  "devDependencies": {
+    "browser-sync": "^2.11.1",
+    "gulp": "^3.9.1",
+    "gulp-autoprefixer": "^3.1.0",
+    "gulp-sass": "^2.2.0",
+    "gulp-sourcemaps": "^1.6.0"
+  }
 }
