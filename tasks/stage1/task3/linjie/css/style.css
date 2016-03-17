@@ -1,0 +1,71 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "微软雅黑";
+}
+
+.Warp_InnerBox{
+    border: 1px solid #999;
+    margin: 20px auto;
+    width: 94%;
+    height: 420px;
+    padding: 20px;
+    background-color: #eee;
+    overflow: hidden;
+    min-width: 800px;
+}
+
+.Warp_InnerBox_left{
+    position: relative;
+    top: 0;
+    left: 0;
+    float: left;
+    border: 1px solid #999;
+    width: 200px;
+    height: 150px;
+    box-shadow: 1px 3px 6px 4px #999 ;
+    background-color: white;
+}
+.Warp_InnerBox_left span{
+    position: absolute;
+    right: 12px;
+    top: 9px;
+}
+.Warp_InnerBox_right{
+    float: right;
+    border: 1px solid #999;
+    width: 120px;
+    height: 420px;
+    box-shadow: 1px 3px 6px 4px #999 ;
+    background-color: white;
+}
+.Warp_InnerBox_mid{
+    border: 1px solid #999;
+    margin: 0 154px 0 235px;
+    height: 90%;
+    padding: 20px;
+    font-size: larger;
+    box-shadow: 1px 3px 6px 4px #999 ;
+    background-color: white;
+}
+.TeamLogo{
+    border: 1px solid  #999;
+    position: absolute;
+    top: 35px;
+    left: 25px;
+    width: 80px;
+    height: 80px;
+}
+.Warp_InnerBox_right ul{
+    margin: 20px;
+}
+.Warp_InnerBox_right ul li{
+    width: 80px;
+    height: 80px;
+    list-style: none;
+    margin-top: 20px;
+}
+.Warp_InnerBox_right ul li img{
+    width: 80px;
+    height: 80px;
+}
