@@ -51,11 +51,11 @@ body {
     width: 78px;
     border: solid 1px gray;
 }
-.div1 {
+.divContent {
     padding-left: 220px;
     padding-right: 140px;
 }
-.div2 {
+.divInner {
     background-color: #fff;
     border: solid 1px gray;
     padding: 20px;
