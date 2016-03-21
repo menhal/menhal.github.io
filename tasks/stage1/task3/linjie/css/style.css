@@ -3,15 +3,19 @@
     padding: 0;
     font-family: "微软雅黑";
 }
+
 body {
     margin: 30px;
+    min-width: 600px;
 }
-.con {
+
+.content {
     border: solid 1px gray;
     background-color: #eee;
     padding: 20px;
 }
-.left {
+
+.edufe-left {
     float: left;
     width: 158px;
     border: solid 1px gray;
@@ -19,48 +23,48 @@ body {
     background-color: #fff;
     margin-left: -100%;
 }
-.left img {
+.edufe-left img {
     width: 78px;
     float: left;
     border: solid 1px gray;
 }
-.left p {
+.edufe-left p {
     float: left;
     width: 78px;
     text-align: center;
 }
-.middle {
+.edufe-middle {
     float: left;
     width: 100%;
 }
-.right {
+.edufe-right {
     float: left;
     width: 120px;
     margin-left: -120px;
 }
-.right ul {
+.edufe-right ul {
     list-style: none;
     padding: 20px 20px 0 20px;
     border: solid 1px gray;
     background-color: #fff;
 }
-.right ul li {
+.edufe-right ul li {
     margin-bottom: 20px;
 }
-.right img {
+.edufe-right img {
     width: 78px;
     border: solid 1px gray;
 }
-.divContent {
+.edufe-divContent {
     padding-left: 220px;
     padding-right: 140px;
 }
-.divInner {
+.edufe-divInner {
     background-color: #fff;
     border: solid 1px gray;
     padding: 20px;
 }
-.clear {
+.edufe-clear {
     clear: both;
 }
 
