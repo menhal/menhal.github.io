@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <title>IFE JavaScript Task 13</title>
+    <title>IFE JavaScript Task 01</title>
 </head>
 <body>
 
@@ -20,19 +20,13 @@
          在事件处理函数中
          获取aqi-input输入的值，并显示在aqi-display中
          */
+        //简单ID选择器
         var $ = function(id){
             return document.getElementById(id);
         }
-        var htmlspecialchars = function(text){
-            return text.replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#039;')
-        }
+
         $("button").addEventListener("click", function(){
-            var text = $("aqi-input").value;
-            $("aqi-display").innerHTML = htmlspecialchars(text);
+            $("aqi-display").innerText = $("aqi-input").value;
         })
     })();
 
