@@ -34,6 +34,13 @@
         return document.getElementById(id);
     }
 
+    //清除字符串两端空格
+    if (!String.prototype.trim) {
+        String.prototype.trim = function () {
+            return this.replace(/^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g, '');
+        };
+    }
+
     //数字变汉字函数
     var num2Hanzi = function(num){
         var arrNum = ["零", "一", "二", "三", "四", "五", "六", "七", "八", "九", "十"];
@@ -50,10 +57,11 @@
          */
         var innerHtml = $("source").innerHTML;
 
-         data = [
-         ["北京", 90],
-         ["北京", 90]
-         ]
+        var data = []
+        innerHtml.split("\n").map(function(obj){
+           var match = obj.trim().match(/^<li>(\S*)空气(\S*)<b>(\d*)<\/b><\/li>/)
+            match && data.push([match[1], match[3]])
+        })
 
         return data;
 
