@@ -87,7 +87,7 @@
         var items = "";
         for(var i in data){
             var aqi = data[i];
-            items += "<li>第"+num2Hanzi(Number(i)+1)+"名："+aqi[0]+"，"+aqi[1]+"</li>";
+            items += "<li>第"+num2Hanzi(Number(i)+1)+"名："+aqi[0]+"空气质量：<b>"+aqi[1]+"</b></li>";
         }
         $("resort").innerHTML = items;
     }
