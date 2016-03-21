@@ -24,12 +24,11 @@
             return document.getElementById(id);
         }
         var htmlspecialchars = function(text){
-            text = text.replace(/&/g, '&amp;')
+            return text.replace(/&/g, '&amp;')
                         .replace(/</g, '&lt;')
                         .replace(/>/g, '&gt;')
                         .replace(/"/g, '&quot;')
                         .replace(/'/g, '&#039;')
-            return text;
         }
         $("button").addEventListener("click", function(){
             var text = $("aqi-input").value;
