@@ -1,0 +1,38 @@
+<!DOCTYPE>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>IFE JavaScript Task 26</title>
+    <style>
+        body{background: #000;}
+        h1{background-color: blue; color: #fff; margin: 0; font-size: 18px; line-height: 2; padding-left: 5px;}
+        #console{width: 400px; position: absolute; right: 0; bottom: 0; background: rgba(255,255,255,0.2)}
+        #console #log{height:200px; padding: 0 5px; overflow: auto;}
+        #console #log p{margin: 0; color: #fff;}
+
+        #commander{width:350px; background: rgba(255,255,255,0.2)}
+        #commander #shipList{margin: 0; padding: 0}
+        #planet{background: #d95100; width: 200px; height: 200px; border-radius: 100%; position: fixed; top:50%; left: 50%; transform: translate(-50%, -50%)}
+        .spaceship{background-color: green; width: 80px; line-height: 25px;position: absolute; margin-left: -40px; left: 50%; top: -70px; transform-origin:center 170px; text-align: center}
+    </style>
+    <script src="js/spaceship.js"></script>
+    <script src="js/commander.js"></script>
+    <script src="js/mediator.js"></script>
+    <script src="js/common.js"></script>
+    <script src="js/main.js"></script>
+</head>
+<body>
+    <div id="planet"></div>
+    <div id="console">
+        <h1>日志</h1>
+        <div id="log"></div>
+    </div>
+    <div id="commander">
+        <h1>控制中心</h1>
+        <ul id="shipList"></ul>
+        <div class="controlpanel">
+            <button id="create">发射飞船</button>
+        </div>
+    </div>
+</body>
+</html>
