@@ -47,12 +47,30 @@
         queue.loadFile({id:"sound1", src:"resource/sound/colorStage1.mp3", data:{audioSprite: stage1Sound}});
         queue.loadFile({id:"sound2", src:"resource/sound/colorStage2.mp3", data:{audioSprite: stage2Sound}});
         queue.loadFile({id:"sound3", src:"resource/sound/colorStage3.mp3", data:{audioSprite: stage3Sound}});
-        queue.loadFile({id:"bing", src:"resource/sound/bing.mp3"});
+        queue.loadFile({id:"bing", src:"resource/sound/right.mp3"});
         queue.loadFile({id:"ao", src:"resource/sound/ao.mp3"});
         queue.loadFile({id:"bg", src:"resource/sound/bg.mp3"});
         queue.loadFile({id:"success", src:"resource/sound/gameOver_success.mp3"});
         queue.loadFile({id:"failed", src:"resource/sound/gameOver_failed.mp3"});
     }
+
+    GAME.showStage = function (num) {
+        var stage1Bg = new lib.stageBg();
+        stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
+        stage.removeAllChildren();
+
+        var gameTitle = new lib.gameTitle().setTransform(475.5,241.8,1,1,0,0,0,297.7,64);
+        gameTitle.setTransform(314,40,0.5,0.5)
+
+        stage.addChild(stage1Bg, gameTitle);
+        createjs.Sound.stop();
+        stage1Bg.gotoAndPlay("stage"+num);
+        setTimeout(function(){
+            stage.removeChild(stage1Bg);
+            GAME["stage"+num]();
+        }, 3000)
+    }
+
 
     GAME.init = function(){
         stage.removeAllChildren();
@@ -60,15 +78,7 @@
         new cjs.ButtonHelper(startBtn, 0, 1, 2, false);
         cjs.Sound.play("bg", {loop:-1});
         startBtn.on("click", function(){
-            var stage1Bg = new lib.stageBg();
-            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-            stage.removeAllChildren();
-            stage.addChild(stage1Bg);
-            createjs.Sound.stop();
-            setTimeout(function(){
-                stage.removeChild(stage1Bg);
-                GAME.stage1();
-            }, 3000)
+            GAME.showStage(1);
         });
 
         var gameTitle = new lib.gameTitle().setTransform(475.5,241.8,1,1,0,0,0,297.7,64);
@@ -135,7 +145,7 @@
             doubleBox.onChoose = function(result){
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
-                    goStage2();
+                    GAME.showStage(2);
                     return;
                 }
                 index ++;
@@ -146,18 +156,18 @@
             GAME.say("cn", data[index][0])
         }
 
-        var goStage2 = function(){
-            stage.removeAllChildren();
-            var stage1Bg = new lib.stageBg();
-            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-            stage1Bg.gotoAndPlay("stage2");
-            stage.addChild(stage1Bg);
-            createjs.Sound.stop();
-            setTimeout(function(){
-                stage.removeChild(stage1Bg);
-                GAME.stage2();
-            }, 3000)
-        }
+        // var goStage2 = function(){
+        //     stage.removeAllChildren();
+        //     var stage1Bg = new lib.stageBg();
+        //     stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
+        //     stage1Bg.gotoAndPlay("stage2");
+        //     stage.addChild(stage1Bg);
+        //     createjs.Sound.stop();
+        //     setTimeout(function(){
+        //         stage.removeChild(stage1Bg);
+        //         GAME.stage2();
+        //     }, 3000)
+        // }
         showSingle();
     }
 
@@ -209,7 +219,7 @@
             doubleBox.onChoose = function(result){
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
-                    goStage3();
+                    GAME.showStage(3);
                     return;
                 }
                 index ++;
@@ -220,18 +230,18 @@
             GAME.say("en", data[index][0])
         }
 
-        var goStage3 = function(){
-            stage.removeAllChildren();
-            var stage1Bg = new lib.stageBg();
-            stage1Bg.gotoAndPlay("stage3");
-            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-            stage.addChild(stage1Bg);
-            createjs.Sound.stop();
-            setTimeout(function(){
-                stage.removeChild(stage1Bg);
-                GAME.stage3();
-            }, 3000)
-        }
+        // var goStage3 = function(){
+        //     stage.removeAllChildren();
+        //     var stage1Bg = new lib.stageBg();
+        //     stage1Bg.gotoAndPlay("stage3");
+        //     stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
+        //     stage.addChild(stage1Bg);
+        //     createjs.Sound.stop();
+        //     setTimeout(function(){
+        //         stage.removeChild(stage1Bg);
+        //         GAME.stage3();
+        //     }, 3000)
+        // }
 
         showSingle();
     }

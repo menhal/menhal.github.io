@@ -20,7 +20,7 @@
 
     this.changeColor = function(color){
         this.color = color;
-        this.shape.graphics.f(color).drawRect(0,0,100,100);
+        this.shape.graphics.f(colorAdjust(color)).drawRect(0,0,100,100);
     }
 }).prototype = p = new createjs.Container();
 
@@ -45,8 +45,8 @@
 
     this.changeColor = function(color){
         this.color = color;
-        this.shape.graphics.f(color[0]).drawRect(0,0,50,100);
-        this.shape.graphics.f(color[1]).drawRect(50,0,50,100);
+        this.shape.graphics.f(colorAdjust(color[0])).drawRect(0,0,50,100);
+        this.shape.graphics.f(colorAdjust(color[1])).drawRect(50,0,50,100);
     }
 }).prototype = p = new createjs.Container();
 

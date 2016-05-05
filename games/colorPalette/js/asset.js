@@ -163,3 +163,11 @@ for(var i=0; i<stage3Sound.length; i++){
     stage3Sound[i].id =  stage3Sound[i].id+"_stage3";
 }
 
+function colorAdjust(color) {
+    if(color === 'goldenrod') return "#F6AB00";
+    if(color === 'purple') return "#6F186E";
+    if(color === 'brown') return "#6A4B23";
+    if(color === 'orange') return "#EA5520";
+
+    return color;
+}
