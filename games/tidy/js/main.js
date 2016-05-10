@@ -6,6 +6,7 @@
     var stage = new cjs.Stage("stage");
     stage.enableMouseOver();
     cjs.Ticker.setFPS(lib.properties.fps);
+	cjs.Touch.enable(stage);
     cjs.Ticker.addEventListener("tick", stage);
 
     var clock = new lib.Clock(30);
