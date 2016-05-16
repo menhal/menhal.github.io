@@ -49,7 +49,7 @@
         queue.loadFile({id:"sound1", src:"resource/sound/colorStage1.mp3", data:{audioSprite: stage1Sound}});
         queue.loadFile({id:"sound2", src:"resource/sound/colorStage2.mp3", data:{audioSprite: stage2Sound}});
         queue.loadFile({id:"sound3", src:"resource/sound/colorStage3.mp3", data:{audioSprite: stage3Sound}});
-        queue.loadFile({id:"bing", src:"resource/sound/bing.mp3"});
+        queue.loadFile({id:"bing", src:"resource/sound/right.mp3"});
         queue.loadFile({id:"ao", src:"resource/sound/ao.mp3"});
         queue.loadFile({id:"bg", src:"resource/sound/bg.mp3"});
         queue.loadFile({id:"success", src:"resource/sound/gameOver_success.mp3"});
@@ -93,10 +93,10 @@
     GAME.stage1 = function(){
         stage.removeAllChildren();
 
-        var singleBox = new lib.singleColorBox(false, 1000);
+        var singleBox = new lib.singleColorBox(false, 2000);
         singleBox.setTransform(280, 200)
 
-        var doubleBox = new lib.doubleColorBox(1000);
+        var doubleBox = new lib.doubleColorBox(2000);
         doubleBox.setTransform(280, 200);
 
         var progress = new lib.progress();
@@ -181,10 +181,10 @@
     GAME.stage2 = function(){
         stage.removeAllChildren();
 
-        var singleBox = new lib.singleColorBox(false, 1000);
+        var singleBox = new lib.singleColorBox(false, 2000);
         singleBox.setTransform(280, 200)
 
-        var doubleBox = new lib.doubleColorBox(1000);
+        var doubleBox = new lib.doubleColorBox(2000);
         doubleBox.setTransform(280, 200);
 
         var progress = new lib.progress();
