@@ -94,14 +94,14 @@
         blankSpace.push(new lib.BlankSpace(["carol","abel"], 568.9,97.4));
         blankSpace.push(new lib.BlankSpace(["mike"], 181.5,224.1));
         blankSpace.push(new lib.BlankSpace(["allen"], 279.3,224.1));
-        blankSpace.push(new lib.BlankSpace(["tim"], 427.6,224.1)); //5
-        blankSpace.push(new lib.BlankSpace(["jenny"], 525.3,224.1));
-        blankSpace.push(new lib.BlankSpace(["mary"], 691.7,224.1)); //7
-        blankSpace.push(new lib.BlankSpace(["steven"], 789.8,224.1));
-        blankSpace.push(new lib.BlankSpace(["anna","david"], 427.6,353.3)); //9
-        blankSpace.push(new lib.BlankSpace(["anna","david"], 525.2,353.3)); //10
-        blankSpace.push(new lib.BlankSpace(["lisa","johns"], 691.7,353.3)); //11
-        blankSpace.push(new lib.BlankSpace(["lisa","johns"], 789.9,353.3)); //12
+        blankSpace.push(new lib.BlankSpace(["mary"], 427.6,224.1)); //5
+        blankSpace.push(new lib.BlankSpace(["steven"], 525.3,224.1));
+        blankSpace.push(new lib.BlankSpace(["tim"], 691.7,224.1)); //7
+        //blankSpace.push(new lib.BlankSpace(["jenny"], 789.8,224.1));
+        blankSpace.push(new lib.BlankSpace(["lisa","johns"], 427.6,353.3)); //9
+        blankSpace.push(new lib.BlankSpace(["lisa","johns"], 525.2,353.3)); //10
+        blankSpace.push(new lib.BlankSpace(["anna","david"], 691.7,353.3)); //11
+        blankSpace.push(new lib.BlankSpace(["anna","david"], 789.9,353.3)); //12
 
         blankSpace.map(function(obj){
             stage.addChild(obj)
@@ -112,8 +112,11 @@
         shape.setTransform(480.1,554.7);
         var gameTitle = new lib.gameTile().setTransform(466,468.3,0.562,0.562,0,0,0,297.7,64);
         var meimei = new lib.fig_meimei();
+        var jenny = new lib.fig_jenny();
+        var jenny_space = new lib.BlankSpace(["jenny"], 789.8,224.1);
         meimei.setTransform(188, 312, 1.2, 1.2).stop();
-        stage.addChild(shape, gameTitle, meimei);
+        jenny.setTransform(750,184, 1.18, 1.18);
+        stage.addChild(shape, gameTitle, meimei, jenny_space, jenny);
 
         //添加角色
         character.push(new lib.Character("mary", new lib.fig_mary()));
@@ -122,7 +125,7 @@
         character.push(new lib.Character("steven", new lib.fig_steven()));
         character.push(new lib.Character("david", new lib.fig_david()));
         character.push(new lib.Character("anna", new lib.fig_anna()));
-        character.push(new lib.Character("jenny", new lib.fig_jenny()));
+        //character.push(new lib.Character("jenny", new lib.fig_jenny()));
         character.push(new lib.Character("tim", new lib.fig_tim()));
         character.push(new lib.Character("abel", new lib.fig_abel()));
         character.push(new lib.Character("carol", new lib.fig_carol()));
@@ -135,35 +138,30 @@
         var names = _.pluck(character, 'name');
         var tracks = _.map(names, function(name, index){
             var num = index+3 > 9 ? index+3 : "0"+(index +3);
-            return "Marker"+num+"_"+name.replace(/(\w)/,function(v){return v.toUpperCase()})
+            var id = "Marker"+num+"_"+name.replace(/(\w)/,function(v){return v.toUpperCase()});
+
+            (function(){
+                var cid = index;
+                setTimeout(function(){
+                    _.find(character, function(c){
+                        return c.name === names[cid];
+                    }).jump();
+                }, gameData[index+2].jump-1300)
+            })();
+            return id
         })
 
         //播放介绍
-        cjs.Sound.play("sound", {startTime:2000, duration:19000}).on("complete", function(){
-            for(var i in tracks){
-                (function(){
-                    var order = i;
-                    var sound = createjs.Sound.createInstance(tracks[i]);
-                    Queue.run(function(){
-                        cjs.Sound.stop();
-                        sound.play();
-                        _.find(character, function(c){
-                            return c.name === names[order];
-                        }).jump();
-                    }, sound._duration);
-                })();
-            }
-            Queue.run(function(){
-                meimei.gotoAndStop(0);
-                GAME.start();
-            }, 0)
+        cjs.Sound.play("sound", {startTime:2000, duration:72000}).on("complete", function(){
+            meimei.gotoAndStop(0);
+            GAME.start();
         })
 
         //将角色放到画布上
         var x = 0;
         character = _.shuffle(character)
         character.map(function(obj){
-            obj.setPosition(x+=73, 560);
+            obj.setPosition(x+=80, 560);
             stage.addChild(obj)
         })
     }
@@ -214,18 +212,18 @@
 
     GAME.check = function(){
         var allCorrect = true;
-        if(blankSpace[4].character.name === 'mary'){
-            //mary家
-            blankSpace[4].name = ['mary']
-            blankSpace[5].name = ['steven'];
-            blankSpace[8].name = ['lisa', 'johns'];
-            blankSpace[9].name = ['lisa', 'johns'];
-            //tim家
-            blankSpace[6].name = ['tim'];
-            blankSpace[7].name = ['jenny'];
-            blankSpace[10].name = ['anna', 'david'];
-            blankSpace[11].name = ['anna', 'david'];
-        }
+        //if(blankSpace[4].character.name === 'mary'){
+        //    //mary家
+        //    blankSpace[4].name = ['mary']
+        //    blankSpace[5].name = ['steven'];
+        //    blankSpace[8].name = ['lisa', 'johns'];
+        //    blankSpace[9].name = ['lisa', 'johns'];
+        //    //tim家
+        //    blankSpace[6].name = ['tim'];
+        //    blankSpace[7].name = ['jenny'];
+        //    blankSpace[10].name = ['anna', 'david'];
+        //    blankSpace[11].name = ['anna', 'david'];
+        //}
         for(var i=0; i<blankSpace.length; i++){
             var space = blankSpace[i];
             if(space.isEmpty()) {

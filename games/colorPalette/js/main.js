@@ -5,11 +5,12 @@
     var GAME = {}
     var stage = new cjs.Stage("stage");
     cjs.Ticker.setFPS(lib.properties.fps);
+	cjs.Touch.enable(stage);
     cjs.Ticker.addEventListener("tick", stage);
 	cjs.Touch.enable(stage);
     stage.enableMouseOver();
 
-    var showPlayAgain = function(){
+    var showPlayAgain = function(stagenum){
         var btn = new lib.gameAgainBtn();
         btn.setTransform(501.5,412.3,0.794,0.794,0,0,0,71.4,72);
         new cjs.ButtonHelper(btn, 0, 1, 2, false, new lib.gameAgainBtn(), 3);
@@ -19,7 +20,7 @@
         cjs.Tween.get(gameTitle).to({alpha: 1}, 500).to({y:240}, 500)
 
         btn.on("click", function(){
-            GAME.stage1();
+            GAME[stagenum]();
         })
         stage.addChild(btn, gameTitle);
     }
@@ -48,30 +49,12 @@
         queue.loadFile({id:"sound1", src:"resource/sound/colorStage1.mp3", data:{audioSprite: stage1Sound}});
         queue.loadFile({id:"sound2", src:"resource/sound/colorStage2.mp3", data:{audioSprite: stage2Sound}});
         queue.loadFile({id:"sound3", src:"resource/sound/colorStage3.mp3", data:{audioSprite: stage3Sound}});
-        queue.loadFile({id:"bing", src:"resource/sound/right.mp3"});
+        queue.loadFile({id:"bing", src:"resource/sound/bing.mp3"});
         queue.loadFile({id:"ao", src:"resource/sound/ao.mp3"});
         queue.loadFile({id:"bg", src:"resource/sound/bg.mp3"});
         queue.loadFile({id:"success", src:"resource/sound/gameOver_success.mp3"});
         queue.loadFile({id:"failed", src:"resource/sound/gameOver_failed.mp3"});
     }
-
-    GAME.showStage = function (num) {
-        var stage1Bg = new lib.stageBg();
-        stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-        stage.removeAllChildren();
-
-        var gameTitle = new lib.gameTitle().setTransform(475.5,241.8,1,1,0,0,0,297.7,64);
-        gameTitle.setTransform(314,40,0.5,0.5)
-
-        stage.addChild(stage1Bg, gameTitle);
-        createjs.Sound.stop();
-        stage1Bg.gotoAndPlay("stage"+num);
-        setTimeout(function(){
-            stage.removeChild(stage1Bg);
-            GAME["stage"+num]();
-        }, 3000)
-    }
-
 
     GAME.init = function(){
         stage.removeAllChildren();
@@ -79,7 +62,15 @@
         new cjs.ButtonHelper(startBtn, 0, 1, 2, false);
         cjs.Sound.play("bg", {loop:-1});
         startBtn.on("click", function(){
-            GAME.showStage(1);
+            var stage1Bg = new lib.stageBg();
+            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
+            stage.removeAllChildren();
+            stage.addChild(stage1Bg);
+            createjs.Sound.stop();
+            setTimeout(function(){
+                stage.removeChild(stage1Bg);
+                GAME.stage1();
+            }, 3000)
         });
 
         var gameTitle = new lib.gameTitle().setTransform(475.5,241.8,1,1,0,0,0,297.7,64);
@@ -91,20 +82,21 @@
     }
 
     GAME.say = function(lang, color){
+        cjs.Sound.stop();
         if(typeof color === "string"){
-            cjs.Sound.play(color+"_"+lang)
+            return cjs.Sound.play(color+"_"+lang)
         }else{
-            cjs.Sound.play(color[0]+"&"+color[1]+"_"+lang)
+            return cjs.Sound.play(color[0]+"&"+color[1]+"_"+lang)
         }
     }
 
     GAME.stage1 = function(){
         stage.removeAllChildren();
 
-        var singleBox = new lib.singleColorBox();
+        var singleBox = new lib.singleColorBox(false, 1000);
         singleBox.setTransform(280, 200)
 
-        var doubleBox = new lib.doubleColorBox();
+        var doubleBox = new lib.doubleColorBox(1000);
         doubleBox.setTransform(280, 200);
 
         var progress = new lib.progress();
@@ -113,7 +105,7 @@
         stage.addChild(progress);
 
         //打乱顺序
-        var index = 0, max = 5;
+        var index = 0, max = 5, right = 0;
         var colors = new lib.colors();
 
         //显示单色选择
@@ -123,6 +115,7 @@
 
             var data = colors.createSingleList(max, 2);
             singleBox.onChoose = function(result){
+                if(result) right++;
                 progress.gotoAndStop(index+1);
                 if(index === data.length - 1){
                     showDouble();
@@ -130,10 +123,14 @@
                 }
                 index ++;
                 singleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3]);
-                GAME.say("cn", data[index][0])
+                GAME.say("cn", data[index][0]).on("complete", function(){
+                    singleBox.startTimeout();
+                })
             }
             singleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3])
-            GAME.say("cn", data[index][0])
+            GAME.say("cn", data[index][0]).on("complete", function(){
+                singleBox.startTimeout();
+            })
         }
 
         //显示双色选择
@@ -144,41 +141,50 @@
 
             var data = colors.createDoubleList(max, 2);
             doubleBox.onChoose = function(result){
+                if(result) right++;
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
-                    GAME.showStage(2);
+                    if(right === 10){
+                        goStage2();
+                    }else{
+                        GAME.fail("stage1");
+                    }
                     return;
                 }
                 index ++;
                 doubleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3]);
-                GAME.say("cn", data[index][0])
+                GAME.say("cn", data[index][0]).on("complete", function(){
+                    doubleBox.startTimeout();
+                })
             }
             doubleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3])
-            GAME.say("cn", data[index][0])
+            GAME.say("cn", data[index][0]).on("complete", function(){
+                doubleBox.startTimeout();
+            })
         }
 
-        // var goStage2 = function(){
-        //     stage.removeAllChildren();
-        //     var stage1Bg = new lib.stageBg();
-        //     stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-        //     stage1Bg.gotoAndPlay("stage2");
-        //     stage.addChild(stage1Bg);
-        //     createjs.Sound.stop();
-        //     setTimeout(function(){
-        //         stage.removeChild(stage1Bg);
-        //         GAME.stage2();
-        //     }, 3000)
-        // }
+        var goStage2 = function(){
+            stage.removeAllChildren();
+            var stage1Bg = new lib.stageBg();
+            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
+            stage1Bg.gotoAndPlay("stage2");
+            stage.addChild(stage1Bg);
+            createjs.Sound.stop();
+            setTimeout(function(){
+                stage.removeChild(stage1Bg);
+                GAME.stage2();
+            }, 3000)
+        }
         showSingle();
     }
 
     GAME.stage2 = function(){
         stage.removeAllChildren();
 
-        var singleBox = new lib.singleColorBox();
+        var singleBox = new lib.singleColorBox(false, 1000);
         singleBox.setTransform(280, 200)
 
-        var doubleBox = new lib.doubleColorBox();
+        var doubleBox = new lib.doubleColorBox(1000);
         doubleBox.setTransform(280, 200);
 
         var progress = new lib.progress();
@@ -187,7 +193,7 @@
         stage.addChild(progress);
 
         //打乱顺序
-        var index = 0, max = 5;
+        var index = 0, max = 5, right = 0;
         var colors = new lib.colors();
 
         //显示单色选择
@@ -197,6 +203,7 @@
 
             var data = colors.createSingleList(max, 2);
             singleBox.onChoose = function(result){
+                if(result) right++;
                 progress.gotoAndStop(index+1);
                 if(index === data.length - 1){
                     showDouble();
@@ -204,10 +211,14 @@
                 }
                 index ++;
                 singleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3]);
-                GAME.say("en", data[index][0])
+                GAME.say("en", data[index][0]).on("complete", function(){
+                    singleBox.startTimeout();
+                })
             }
             singleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3])
-            GAME.say("en", data[index][0])
+            GAME.say("en", data[index][0]).on("complete", function(){
+                singleBox.startTimeout();
+            })
         }
 
         //显示双色选择
@@ -218,31 +229,40 @@
 
             var data = colors.createDoubleList(max, 2);
             doubleBox.onChoose = function(result){
+                if(result) right++;
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
-                    GAME.showStage(3);
+                    if(right === 10){
+                        goStage3();
+                    }else{
+                        GAME.fail("stage2");
+                    }
                     return;
                 }
                 index ++;
                 doubleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3]);
-                GAME.say("en", data[index][0])
+                GAME.say("en", data[index][0]).on("complete", function(){
+                    doubleBox.startTimeout();
+                })
             }
             doubleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3])
-            GAME.say("en", data[index][0])
+            GAME.say("en", data[index][0]).on("complete", function(){
+                doubleBox.startTimeout();
+            })
         }
 
-        // var goStage3 = function(){
-        //     stage.removeAllChildren();
-        //     var stage1Bg = new lib.stageBg();
-        //     stage1Bg.gotoAndPlay("stage3");
-        //     stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-        //     stage.addChild(stage1Bg);
-        //     createjs.Sound.stop();
-        //     setTimeout(function(){
-        //         stage.removeChild(stage1Bg);
-        //         GAME.stage3();
-        //     }, 3000)
-        // }
+        var goStage3 = function(){
+            stage.removeAllChildren();
+            var stage1Bg = new lib.stageBg();
+            stage1Bg.gotoAndPlay("stage3");
+            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
+            stage.addChild(stage1Bg);
+            createjs.Sound.stop();
+            setTimeout(function(){
+                stage.removeChild(stage1Bg);
+                GAME.stage3();
+            }, 3000)
+        }
 
         showSingle();
     }
@@ -254,27 +274,37 @@
 
         var colors = new lib.colors();
         var data = colors.createPaletteList();
-        var singleBox = new lib.singleColorBox(true);
-        var index = 0;
+        var singleBox = new lib.singleColorBox(true, 2000);
+        var index = 0, right = 0;
         singleBox.setTransform(700, 150)
 
         singleBox.onChoose = function(result){
+            if(result) right++;
             createjs.Sound.stop();
             if(index === data.length - 1){
-                GAME.win();
+                if(right === 10){
+                    GAME.win();
+                }else{
+                    GAME.fail("stage3");
+                }
                 return;
             }
             index ++;
             singleBox.changeColor(data[index][1], data[index][2], data[index][3], data[index][4]);
-            GAME.say("stage3", data[index][0])
+            GAME.say("stage3", data[index][0]).on("complete", function(){
+                singleBox.startTimeout();
+            })
         }
         singleBox.changeColor(data[index][1], data[index][2], data[index][3], data[index][4])
-        GAME.say("stage3", data[index][0])
+        GAME.say("stage3", data[index][0]).on("complete", function(){
+            singleBox.startTimeout();
+        })
 
         stage.addChild(palette, singleBox)
     }
 
     GAME.win = function(){
+        stage.removeAllChildren();
         createjs.Sound.stop();
         cjs.Sound.play("success")
         stage.removeAllChildren();
@@ -288,7 +318,8 @@
         }, 3000)
     }
 
-    GAME.fail = function(){
+    GAME.fail = function(stagenum){
+        stage.removeAllChildren();
         cjs.Sound.stop();
         cjs.Sound.play("failed")
         var face = new lib.sad();
@@ -296,7 +327,7 @@
         stage.addChild(face);
         setTimeout(function(){
             stage.removeChild(face);
-            showPlayAgain();
+            showPlayAgain(stagenum);
         }, 3000)
     }
 

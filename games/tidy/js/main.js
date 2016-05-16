@@ -9,7 +9,10 @@
 	cjs.Touch.enable(stage);
     cjs.Ticker.addEventListener("tick", stage);
 
-    var clock = new lib.Clock(30);
+    var clock = new lib.Clock(20);
+    var total = 8;
+    var correct = 0;
+
     clock.stopCount();
     clock.setTransform(880, 20);
     clock.on("timeup", function(){
@@ -59,11 +62,18 @@
         stage.removeAllChildren();
         cjs.Sound.play("intro").on("complete", function(){
             GAME.start();
+            drag_kite.on("mouseover", function(){
+                this.gotoAndStop("stateB")
+            })
         });
+        //GAME.start();
 
         // drag
-        window.drag_ball = new lib.drag_ball();
-        drag_ball.setTransform(211,460,1,1,0,0,0,0,0);
+        var drag_box = new lib.drag_box();
+        drag_box.setTransform(222.4,372.8,1,1,0,0,0,72.8,46.5);
+
+        var drag_ball = new lib.drag_ball();
+        drag_ball.setTransform(190.3,498.4,1,1,0,0,0,0,0);
 
         var drag_floorLamp = new lib.drag_floorLamp();
         drag_floorLamp.setTransform(589,473,1,1,0,0,0,3.5,0);
@@ -75,17 +85,17 @@
         drag_hat.setTransform(339.8,579.8,1,1,0,0,0,-0.4,3)
 
         var drag_kite = new lib.drag_kite();
-        drag_kite.setTransform(464.3,470.4,1,1,0,0,0,4,67)
+        drag_kite.setTransform(432.1,359.4,1,1,0,0,0,4,67.1);
 
         var drag_chair = new lib.drag_chair();
-        drag_chair.setTransform(400.7,603.4,1,1,0,0,0,0,0)
+        drag_chair.setTransform(348,520,1,1,0,0,0,0,0);
 
         var drag_book = new lib.drag_book();
-        drag_book.setTransform(96.1,501,1,1,0,0,0,13,20);
+        drag_book.setTransform(96.1,501,1,1,0,0,0,53,30);
 
         // hotMap
-        var hotMap_ball = new lib.hotMap_ball("synched",0);
-        hotMap_ball.setTransform(238.7,364)
+        //var hotMap_ball = new lib.hotMap_ball("synched",0);
+        //hotMap_ball.setTransform(238.7,364)
 
         var hotMap_Floorlamp = new lib.hotMap_Floorlamp("synched",0);
         hotMap_Floorlamp.setTransform(620,347,1,1,0,0,0,20,-10)
@@ -97,23 +107,52 @@
         hotMap_hat.setTransform(412.5,279.2,1,1,0,0,0,28.6,-2)
 
         var hotMap_kite = new lib.hotMap_kite("synched",0);
-        hotMap_kite.setTransform(69.1,247.8,1,1,0,0,0,-1.1,62)
+        hotMap_kite.setTransform(69.1,185.8,1,1,0,0,0,-1.1,0)
 
         var hotMap_chair = new lib.hotMap_chair("synched",0);
         hotMap_chair.setTransform(707.6,553.4,1,1,0,0,0,0,0)
 
         var hotMap_book = new lib.hotMap_book("synched",0);
-        hotMap_book.setTransform(818.1,256,1,1,0,0,0,27,27);
+        hotMap_book.setTransform(781,226,1,1,0,0,0,0,0);
 
-        stage.addChild(drag_ball,drag_floorLamp,drag_shoes,drag_hat,drag_kite,drag_chair,drag_book,hotMap_ball,hotMap_Floorlamp,hotMap_shoes,hotMap_hat,hotMap_kite,hotMap_chair,hotMap_book);
+        var hotMap_box = new lib.hotMap_box("synched",0);
+        hotMap_box.setTransform(482.2,332,1,1,0,0,0,-70.8,-53);
 
-        GAME.setTarget(drag_ball, hotMap_ball);
+        stage.addChild(hotMap_Floorlamp,hotMap_shoes,hotMap_hat,hotMap_kite,hotMap_chair,hotMap_book, hotMap_box,drag_box,drag_ball,drag_floorLamp,drag_shoes,drag_hat,drag_kite,drag_chair,drag_book);
+
+        GAME.setTarget(drag_ball, drag_box);
         GAME.setTarget(drag_floorLamp, hotMap_Floorlamp);
         GAME.setTarget(drag_shoes, hotMap_shoes);
         GAME.setTarget(drag_hat, hotMap_hat);
         GAME.setTarget(drag_kite, hotMap_kite);
         GAME.setTarget(drag_chair, hotMap_chair);
         GAME.setTarget(drag_book, hotMap_book);
+        GAME.setTarget(drag_box, hotMap_box);
+
+        //球拖拽
+        drag_ball.on("hit", function(evt){
+            var self = this;
+            setTimeout(function(){
+                drag_box.addChild(self);
+                self.x = 65;
+                self.y = 24
+            }, 0)
+        })
+
+        drag_box.on("hit", function(evt){
+            var self = this;
+            setTimeout(function(){
+                self.x = 482;
+                self.y = 333;
+            }, 0)
+
+            for(var i=0; i<this.children.length;i++){
+                if(this.children[i] instanceof lib.drag_ball ){
+                    this.removeChild(this.children[i])
+                }
+            }
+            drag_ball._listeners && delete drag_ball._listeners.pressup;
+        })
     }
 
     GAME.init = function(){
@@ -137,12 +176,17 @@
         GAME.isStart = true;
     }
 
-
-    var total = 7;
-    var correct = 0;
+    GAME.judge = function(){
+        if(correct === total){
+            GAME.win();
+        }
+    }
 
     GAME.setTarget = function(obj, target){
-        target.alpha = 0.1;
+        obj.cursor = "pointer"
+        if(!(target instanceof lib.drag_box)){
+            target.alpha = 0.1;
+        }
 
         obj.on("pressmove", function(evt){
             if(!GAME.isStart) return;
@@ -150,20 +194,25 @@
             this.y = evt.stageY
         })
 
-        obj.on("pressup", function(){
+        obj.on("pressup", function(evt){
             if(!GAME.isStart) return;
-            var pt = target.localToLocal(0, 0, obj);
+            var pt = obj.localToLocal(obj.regX, obj.regY, target);
 
             if(target.hitTest(pt.x, pt.y)){
+                var event = new createjs.Event("hit");
+                obj.dispatchEvent(event);
+
                 cjs.Sound.play("dragOn")
                 correct++;
-                obj.x = target.x;
-                obj.y = target.y;
+
+                obj.x = target.x+obj.regX;
+                obj.y = target.y+obj.regY;
                 if(obj instanceof cjs.MovieClip) obj.gotoAndStop("stateB");
+                //obj.setTransform(target.regX,target.regY)
+                //target.addChild(obj)
                 obj.removeAllEventListeners();
-                if(correct === total){
-                    GAME.win();
-                }
+                GAME.judge();
+
             }
         })
     }

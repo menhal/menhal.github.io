@@ -144,7 +144,7 @@
 });
 
 //单色选择
-(lib.singleColorBox = function(vertical){
+(lib.singleColorBox = function(vertical, sec){
     this.initialize();
     this.box1 = new lib.colorRect();
     this.box2 = new lib.colorRect();
@@ -167,15 +167,33 @@
     var cross = new lib.cross();
     cross.setTransform(0,0,1,1,0,0,0,-30,-25)
 
+    var timeout = null;
     this.changeColor = function(main, color1, color2, color3){
         this.box1.changeColor(color1);
         this.box2.changeColor(color2);
         this.box3.changeColor(color3);
 
         this.mainColor = main;
+        self.clearTimeout();
+    }
+
+    this.startTimeout = function(){
+        if(isShowResult) return;
+        timeout = setTimeout(onTimeout, sec);
+    }
+
+    this.clearTimeout = function(){
+        clearTimeout(timeout);
+        timeout = null;
+    }
+
+    var onTimeout = function(){
+        if(isShowResult) return;
+        self.onChoose(false);
     }
 
     this.on("selectcolor", function(evt){
+        self.clearTimeout();
         if(isShowResult) return;
         isShowResult = true;
 
@@ -190,6 +208,7 @@
         result ? createjs.Sound.play("bing") : createjs.Sound.play("ao")
 
         setTimeout(function(){
+            self.clearTimeout();
             isShowResult = false;
             self.removeChild(cross);
             self.onChoose(result);
@@ -205,7 +224,7 @@
 }).prototype = p = new createjs.Container();
 
 //双色选择
-(lib.doubleColorBox = function(){
+(lib.doubleColorBox = function(sec){
     this.initialize();
     this.box1 = new lib.doubleColorRect();
     this.box2 = new lib.doubleColorRect();
@@ -222,15 +241,28 @@
     var cross = new lib.cross();
     cross.setTransform(0,0,1,1,0,0,0,-30,-25)
 
+    var timeout = null;
     this.changeColor = function(main, color1, color2, color3){
         this.box1.changeColor(color1);
         this.box2.changeColor(color2);
         this.box3.changeColor(color3);
 
         this.mainColor = main;
+        clearTimeout(timeout);
+    }
+
+    this.startTimeout = function(){
+        if(isShowResult) return;
+        timeout = setTimeout(onTimeout, sec);
+    }
+
+    var onTimeout = function(){
+        if(isShowResult) return;
+        self.onChoose(false);
     }
 
     this.on("selectcolor", function(evt){
+        clearTimeout(timeout);
         if(isShowResult) return;
         isShowResult = true;
 
