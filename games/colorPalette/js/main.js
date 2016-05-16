@@ -25,6 +25,23 @@
         stage.addChild(btn, gameTitle);
     }
 
+	GAME.showStage = function (num) {
+        var stage1Bg = new lib.stageBg();
+        stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
+        stage.removeAllChildren();
+
+        var gameTitle = new lib.gameTitle().setTransform(475.5,241.8,1,1,0,0,0,297.7,64);
+        gameTitle.setTransform(314,40,0.5,0.5)
+
+        stage.addChild(stage1Bg, gameTitle);
+        createjs.Sound.stop();
+        stage1Bg.gotoAndPlay("stage"+num);
+        setTimeout(function(){
+            stage.removeChild(stage1Bg);
+            GAME["stage"+num]();
+        }, 3000)
+    }
+
     GAME.preLoad = function(data1, data2, data3){
         GAME.data1 = stage1Sound;
         GAME.data2 = data2;
@@ -62,15 +79,7 @@
         new cjs.ButtonHelper(startBtn, 0, 1, 2, false);
         cjs.Sound.play("bg", {loop:-1});
         startBtn.on("click", function(){
-            var stage1Bg = new lib.stageBg();
-            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-            stage.removeAllChildren();
-            stage.addChild(stage1Bg);
-            createjs.Sound.stop();
-            setTimeout(function(){
-                stage.removeChild(stage1Bg);
-                GAME.stage1();
-            }, 3000)
+            GAME.showStage(1);
         });
 
         var gameTitle = new lib.gameTitle().setTransform(475.5,241.8,1,1,0,0,0,297.7,64);
@@ -145,7 +154,7 @@
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
                     if(right === 10){
-                        goStage2();
+                        GAME.showStage(2);
                     }else{
                         GAME.fail("stage1");
                     }
@@ -162,19 +171,7 @@
                 doubleBox.startTimeout();
             })
         }
-
-        var goStage2 = function(){
-            stage.removeAllChildren();
-            var stage1Bg = new lib.stageBg();
-            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-            stage1Bg.gotoAndPlay("stage2");
-            stage.addChild(stage1Bg);
-            createjs.Sound.stop();
-            setTimeout(function(){
-                stage.removeChild(stage1Bg);
-                GAME.stage2();
-            }, 3000)
-        }
+        
         showSingle();
     }
 
@@ -233,7 +230,7 @@
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
                     if(right === 10){
-                        goStage3();
+                        GAME.showStage(3);
                     }else{
                         GAME.fail("stage2");
                     }
@@ -250,20 +247,6 @@
                 doubleBox.startTimeout();
             })
         }
-
-        var goStage3 = function(){
-            stage.removeAllChildren();
-            var stage1Bg = new lib.stageBg();
-            stage1Bg.gotoAndPlay("stage3");
-            stage1Bg.setTransform(480.1,358.2,1,1,0,0,0,450,267.9);
-            stage.addChild(stage1Bg);
-            createjs.Sound.stop();
-            setTimeout(function(){
-                stage.removeChild(stage1Bg);
-                GAME.stage3();
-            }, 3000)
-        }
-
         showSingle();
     }
 
