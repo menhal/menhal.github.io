@@ -16,10 +16,12 @@ lib.Clock = function(limit){
     self.remain = limit;
     self.numText.text = limit;
     self.gotoAndStop(0);
+	var sound ;
     //
     var countDown = function(){
         self.numText.text = self.remain;
         self.gotoAndStop(Math.floor((limit - self.remain) * 29 / limit));
+		sound = createjs.Sound.play("timer", {loop:-1});
 
         return setInterval(function(){
             self.remain --;
@@ -44,7 +46,8 @@ lib.Clock = function(limit){
     }
 
     self.stopCount = function(){
-        clearInterval(interval)
+        clearInterval(interval);
+		sound && sound.stop();
     }
 
     self.on("removed", function(){

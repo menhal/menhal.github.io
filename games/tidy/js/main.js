@@ -54,6 +54,7 @@
         queue.loadFile({src:"resource/sound/dragOn.mp3", id:"dragOn"});
         queue.loadFile({src:"resource/sound/gameOver_failed.mp3", id:"failed"});
         queue.loadFile({src:"resource/sound/gameOver_success.mp3", id:"success"});
+        queue.loadFile({src:"resource/sound/timer.mp3", id:"timer"});
     }
 
     GAME.intro = function(){
