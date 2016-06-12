@@ -1,4 +1,4 @@
-var colorsList = ["brown", "yellow", "green", "blue", "pink", "black", "orange", "white", "purple", "red", "grey", "goldenrod", "silver"]
+var colorsList = ["brown", "yellow", "green", "blue", "pink", "black", "orange", "white", "purple", "red", "grey", "silver"]
 var doubleColorsList = [
     "brown&yellow", "brown&blue", "brown&black", "brown&purple", "brown&red", "brown&grey", "brown&silver",
     "yellow&blue", "yellow&pink", "yellow&black", "yellow&purple", "yellow&red", "yellow&silver",

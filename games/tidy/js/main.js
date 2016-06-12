@@ -9,7 +9,7 @@
 	cjs.Touch.enable(stage);
     cjs.Ticker.addEventListener("tick", stage);
 
-    var clock = new lib.Clock(20);
+    var clock = new lib.Clock(60);
     var total = 8;
     var correct = 0;
 
@@ -62,10 +62,6 @@
         cjs.Sound.stop();
         stage.removeAllChildren();
         cjs.Sound.play("intro").on("complete", function(){
-            GAME.start();
-            drag_kite.on("mouseover", function(){
-                this.gotoAndStop("stateB")
-            })
         });
         //GAME.start();
 
@@ -154,6 +150,11 @@
             }
             drag_ball._listeners && delete drag_ball._listeners.pressup;
         })
+
+        drag_kite.on("mouseover", function(){
+            this.gotoAndStop("stateB")
+        })
+        GAME.start();
     }
 
     GAME.init = function(){

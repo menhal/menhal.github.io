@@ -9,7 +9,7 @@
 	cjs.Touch.enable(stage);
     stage.enableMouseOver();
 
-    var clock = new lib.Clock(60);
+    var clock = new lib.Clock(80);
     clock.stopCount();
     clock.setTransform(880, 20);
     clock.on("timeup", function(){
@@ -96,7 +96,7 @@
         blankSpace.push(new lib.BlankSpace(["mike"], 181.5,224.1));
         blankSpace.push(new lib.BlankSpace(["allen"], 279.3,224.1));
         blankSpace.push(new lib.BlankSpace(["mary"], 427.6,224.1)); //5
-        blankSpace.push(new lib.BlankSpace(["steven"], 525.3,224.1));
+        //blankSpace.push(new lib.BlankSpace(["steven"], 525.3,224.1));
         blankSpace.push(new lib.BlankSpace(["tim"], 691.7,224.1)); //7
         //blankSpace.push(new lib.BlankSpace(["jenny"], 789.8,224.1));
         blankSpace.push(new lib.BlankSpace(["lisa","johns"], 427.6,353.3)); //9
@@ -115,15 +115,18 @@
         var meimei = new lib.fig_meimei();
         var jenny = new lib.fig_jenny();
         var jenny_space = new lib.BlankSpace(["jenny"], 789.8,224.1);
+        var steven = new lib.fig_steven();
+        var steven_space = new lib.BlankSpace(["steven"], 525.3,224.1)
         meimei.setTransform(188, 312, 1.2, 1.2).stop();
         jenny.setTransform(750,184, 1.18, 1.18);
-        stage.addChild(shape, gameTitle, meimei, jenny_space, jenny);
+        steven.setTransform(486.3,184.1, 1.18, 1.18);
+        stage.addChild(shape, gameTitle, meimei, jenny_space, jenny, steven_space, steven);
 
         //添加角色
         character.push(new lib.Character("mary", new lib.fig_mary()));
         character.push(new lib.Character("lisa", new lib.fig_lisa()));
         character.push(new lib.Character("johns", new lib.fig_johns()));
-        character.push(new lib.Character("steven", new lib.fig_steven()));
+        //character.push(new lib.Character("steven", new lib.fig_steven()));
         character.push(new lib.Character("david", new lib.fig_david()));
         character.push(new lib.Character("anna", new lib.fig_anna()));
         //character.push(new lib.Character("jenny", new lib.fig_jenny()));
@@ -155,16 +158,17 @@
         //播放介绍
         cjs.Sound.play("sound", {startTime:2000, duration:72000}).on("complete", function(){
             meimei.gotoAndStop(0);
-            GAME.start();
         })
 
         //将角色放到画布上
         var x = 0;
         character = _.shuffle(character)
         character.map(function(obj){
-            obj.setPosition(x+=80, 560);
+            obj.setPosition(x+=88, 560);
             stage.addChild(obj)
         })
+
+        GAME.start();
     }
 
     GAME.start = function(){

@@ -21,7 +21,7 @@ lib.Clock = function(limit){
     var countDown = function(){
         self.numText.text = self.remain;
         self.gotoAndStop(Math.floor((limit - self.remain) * 29 / limit));
-		sound = createjs.Sound.play("timer", {loop:-1});
+		//sound = createjs.Sound.play("timer", {loop:-1});
 
         return setInterval(function(){
             self.remain --;

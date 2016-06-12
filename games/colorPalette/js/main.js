@@ -20,7 +20,7 @@
         cjs.Tween.get(gameTitle).to({alpha: 1}, 500).to({y:240}, 500)
 
         btn.on("click", function(){
-            GAME[stagenum]();
+            GAME["stage1"]();
         })
         stage.addChild(btn, gameTitle);
     }
@@ -102,76 +102,134 @@
     GAME.stage1 = function(){
         stage.removeAllChildren();
 
-        var singleBox = new lib.singleColorBox(false, 2000);
-        singleBox.setTransform(280, 200)
+        var keyboard = new lib.keyboard();
+        keyboard.setTransform(483.2,349.4,1,1,0,0,0,457.1,178.8);
+        var colorRect = new lib.colorRect("red");
+        colorRect.setTransform(222,67);
+        var doubleColorRect = new lib.doubleColorRect();
+        doubleColorRect.setTransform(222,67);
 
-        var doubleBox = new lib.doubleColorBox(2000);
-        doubleBox.setTransform(280, 200);
+        var inputText = new cjs.Text("", "50px 'Helvetica'");
+        inputText.name = "inputText";
+        inputText.textAlign = "center";
+        inputText.lineHeight = 52;
+        inputText.lineWidth = 316;
+        inputText.setTransform(580.2,85.8);
+        var inputBox = new lib.inputBox("synched",0);
+        inputBox.setTransform(582.2,113.8,1,1,0,0,0,187.1,42);
 
         var progress = new lib.progress();
         progress.gotoAndStop(0);
-        progress.setTransform(320, 500)
+        progress.setTransform(320, 550)
         stage.addChild(progress);
+
+        keyboard.on("keypress", function(evt){
+            var str = evt.keycode;
+            if(str === "backspace"){
+                inputText.text = inputText.text.substring(0,inputText.text.length-1);
+            }else if(str === "enter"){
+                inputText.text = $.trim(inputText.text);
+                var event = new createjs.Event("textchange");
+                inputText.dispatchEvent(event);
+                inputText.text = "";
+            }else{
+                inputText.text += str;
+            }
+        })
+        stage.addChild(keyboard, inputBox, inputText, colorRect, progress);
+
 
         //打乱顺序
         var index = 0, max = 5, right = 0;
         var colors = new lib.colors();
+        var loading = false;
 
-        //显示单色选择
+
+        var onRight = function(){
+            right++;
+            createjs.Sound.play("bing");
+        }
+
+        var onWrong = function(){
+            createjs.Sound.play("ao");
+
+            setTimeout(function(){
+                if(progress.currentFrame <=5){
+                    showSingle();
+                }else{
+                    showDouble();
+                }
+            }, 1000)
+        }
+
         var showSingle = function(){
-            stage.removeChild(doubleBox);
-            stage.addChild(singleBox);
-
+            index = 0; right = 0;
             var data = colors.createSingleList(max, 2);
-            singleBox.onChoose = function(result){
-                if(result) right++;
+            inputText.removeAllEventListeners();
+            progress.gotoAndStop(index);
+            inputText.on("textchange", function(){
+                if(loading) return;
+                var text= inputText.text;
+                var realText = data[index][0];
+                var result = text === realText;
+
+                result ? onRight() : onWrong();
+                if(!result) return;
                 progress.gotoAndStop(index+1);
                 if(index === data.length - 1){
-                    showDouble();
+                    setTimeout(function(){
+                        showDouble();
+                    }, 2000)
                     return;
                 }
                 index ++;
-                singleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3]);
-                GAME.say("cn", data[index][0]).on("complete", function(){
-                    singleBox.startTimeout();
-                })
-            }
-            singleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3])
-            GAME.say("cn", data[index][0]).on("complete", function(){
-                singleBox.startTimeout();
+
+                loading = true;
+                setTimeout(function(){
+                    colorRect.changeColor(data[index][0]);
+                    GAME.say("cn", data[index][0])
+                    loading = false;
+                }, 2000)
             })
+            colorRect.changeColor(data[index][0])
+            GAME.say("cn", data[index][0])
         }
 
-        //显示双色选择
         var showDouble = function(){
             index = 0;
-            stage.removeChild(singleBox);
-            stage.addChild(doubleBox);
+            stage.removeChild(colorRect);
+            stage.addChild(doubleColorRect);
+            inputText.removeAllEventListeners();
+            progress.gotoAndStop(5);
 
             var data = colors.createDoubleList(max, 2);
-            doubleBox.onChoose = function(result){
-                if(result) right++;
+            inputText.on("textchange", function(evt){
+                if(loading) return;
+                var text= inputText.text;
+                var realText = data[index][0][0]+" "+data[index][0][1];
+                var result = text === realText;
+
+                result ? onRight() : onWrong();
+                if(!result) return;
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
-                    if(right === 10){
+                    setTimeout(function(){
                         GAME.showStage(2);
-                    }else{
-                        GAME.fail("stage1");
-                    }
+                    }, 2000)
                     return;
                 }
                 index ++;
-                doubleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3]);
-                GAME.say("cn", data[index][0]).on("complete", function(){
-                    doubleBox.startTimeout();
-                })
-            }
-            doubleBox.changeColor(data[index][0], data[index][1], data[index][2], data[index][3])
-            GAME.say("cn", data[index][0]).on("complete", function(){
-                doubleBox.startTimeout();
-            })
+
+                loading = true;
+                setTimeout(function(){
+                    doubleColorRect.changeColor(data[index][0]);
+                    GAME.say("cn", data[index][0]);
+                    loading = false;
+                }, 2000)
+            });
+            doubleColorRect.changeColor(data[index][0])
+            GAME.say("cn", data[index][0])
         }
-        
         showSingle();
     }
 
@@ -197,10 +255,15 @@
         var showSingle = function(){
             stage.removeChild(doubleBox);
             stage.addChild(singleBox);
+            index = 0;
+            progress.gotoAndStop(0);
 
             var data = colors.createSingleList(max, 2);
             singleBox.onChoose = function(result){
-                if(result) right++;
+                if(!result) {
+                    showSingle();
+                    return;
+                }
                 progress.gotoAndStop(index+1);
                 if(index === data.length - 1){
                     showDouble();
@@ -223,17 +286,17 @@
             index = 0;
             stage.removeChild(singleBox);
             stage.addChild(doubleBox);
+            progress.gotoAndStop(5);
 
             var data = colors.createDoubleList(max, 2);
             doubleBox.onChoose = function(result){
-                if(result) right++;
+                if(!result) {
+                    showDouble();
+                    return;
+                }
                 progress.gotoAndStop(index+6);
                 if(index === data.length - 1){
-                    if(right === 10){
-                        GAME.showStage(3);
-                    }else{
-                        GAME.fail("stage2");
-                    }
+                    GAME.showStage(3);
                     return;
                 }
                 index ++;
@@ -262,14 +325,16 @@
         singleBox.setTransform(700, 150)
 
         singleBox.onChoose = function(result){
-            if(result) right++;
+            if(!result) {
+                singleBox.changeColor(data[index][1], data[index][2], data[index][3], data[index][4])
+                GAME.say("stage3", data[index][0]).on("complete", function(){
+                    singleBox.startTimeout();
+                })
+                return;
+            }
             createjs.Sound.stop();
             if(index === data.length - 1){
-                if(right === 10){
-                    GAME.win();
-                }else{
-                    GAME.fail("stage3");
-                }
+                GAME.win();
                 return;
             }
             index ++;
@@ -297,7 +362,7 @@
 
         setTimeout(function(){
             stage.removeChild(face);
-            showPlayAgain();
+            showPlayAgain(1);
         }, 3000)
     }
 

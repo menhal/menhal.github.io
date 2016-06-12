@@ -7,11 +7,7 @@ var gameData = [
     "startTime": 26500,
     "duration": 2500,
     "id": "Marker04_Lisa", "jump":27000
-}, {"startTime": 29000, "duration": 7000, "id": "Marker05_Johns", "jump":30000}, {
-    "startTime": 36000,
-    "duration": 9000,
-    "id": "Marker06_Steven", "jump":37000
-}, {"startTime": 45000, "duration": 3000, "id": "Marker07_David", "jump":46000}, {
+}, {"startTime": 29000, "duration": 7000, "id": "Marker05_Johns", "jump":30000}, {"startTime": 45000, "duration": 3000, "id": "Marker07_David", "jump":46000}, {
     "startTime": 48000,
     "duration": 4000,
     "id": "Marker08_Anna", "jump":51000
