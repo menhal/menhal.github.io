@@ -154,7 +154,7 @@
             createjs.Sound.play("ao");
 
             setTimeout(function(){
-                if(progress.currentFrame <=5){
+                if(progress.currentFrame <5){
                     showSingle();
                 }else{
                     showDouble();

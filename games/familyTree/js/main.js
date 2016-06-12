@@ -323,6 +323,7 @@ function parseXml (xml){
     }
 
     self.jump = function(){
+        if(self.scaleX > 1.1) return;
         createjs.Tween.get(self)
             .to({y:oldy-30}, 200).to({y:oldy}, 200)
             .to({y:oldy-30}, 200).to({y:oldy}, 200)
