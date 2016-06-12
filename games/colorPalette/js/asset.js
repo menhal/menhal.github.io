@@ -1,15 +1,15 @@
-var colorsList = ["brown", "yellow", "green", "blue", "pink", "black", "orange", "white", "purple", "red", "grey", "silver"]
+var colorsList = ["brown", "yellow", "green", "blue", "pink", "black", "orange", "white", "purple", "red", "grey"]
 var doubleColorsList = [
-    "brown&yellow", "brown&blue", "brown&black", "brown&purple", "brown&red", "brown&grey", "brown&silver",
-    "yellow&blue", "yellow&pink", "yellow&black", "yellow&purple", "yellow&red", "yellow&silver",
-    "green&orange", "green&white", "green&grey", "green&silver",
+    "brown&yellow", "brown&blue", "brown&black", "brown&purple", "brown&red", "brown&grey",
+    "yellow&blue", "yellow&pink", "yellow&black", "yellow&purple", "yellow&red",
+    "green&orange", "green&white", "green&grey",
     "blue&pink", "blue&black", "blue&orange", "blue&white", "blue&red", "blue&grey",
     "pink&black", "pink&white", "pink&red",
-    "black&orange", "black&red", "black&white", "black&grey", "black&silver",
+    "black&orange", "black&red", "black&white", "black&grey",
     "orange&purple", "orange&red", "orange&grey",
     "white&purple", "white&red",
-    "purple&red", "purple&grey", "purple&silver",
-    "red&grey", "red&silver", "grey&silver"
+    "purple&red", "purple&grey",
+    "red&grey"
 ]
 
 var stage1Sound = [
