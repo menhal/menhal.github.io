@@ -177,6 +177,7 @@
 
         for(var i in character){
             character[i].on("pressmove", function(evt){
+                this.drag = true;
                 this.stage.setChildIndex(this, this.stage.children.length-1);
                 this.setPosition(evt.stageX, evt.stageY);
             })
@@ -217,18 +218,7 @@
 
     GAME.check = function(){
         var allCorrect = true;
-        //if(blankSpace[4].character.name === 'mary'){
-        //    //mary家
-        //    blankSpace[4].name = ['mary']
-        //    blankSpace[5].name = ['steven'];
-        //    blankSpace[8].name = ['lisa', 'johns'];
-        //    blankSpace[9].name = ['lisa', 'johns'];
-        //    //tim家
-        //    blankSpace[6].name = ['tim'];
-        //    blankSpace[7].name = ['jenny'];
-        //    blankSpace[10].name = ['anna', 'david'];
-        //    blankSpace[11].name = ['anna', 'david'];
-        //}
+
         for(var i=0; i<blankSpace.length; i++){
             var space = blankSpace[i];
             if(space.isEmpty()) {
@@ -255,6 +245,10 @@
             }
         }
         evt.character.goBack();
+    })
+
+    stage.on("character.remove", function(evt){
+        count --;
     })
 
 
@@ -303,7 +297,7 @@ function parseXml (xml){
 (lib.Character = function(name, graphic){
     var self = graphic;
     self.name = name;
-    self.setTransform(0,0,1,1,0,0,0,30,40)
+    self.setTransform(0,0,1,1,0,0,0,30,40);
 
     var oldx, oldy;
     self.setPosition = function(x, y){
@@ -323,7 +317,8 @@ function parseXml (xml){
     }
 
     self.jump = function(){
-        if(self.scaleX > 1.1) return;
+        if(self.scaleX > 1.1) return; //已经放好的不跳
+        if(self.drag) return; //正在拖放的不跳
         createjs.Tween.get(self)
             .to({y:oldy-30}, 200).to({y:oldy}, 200)
             .to({y:oldy-30}, 200).to({y:oldy}, 200)
@@ -331,10 +326,22 @@ function parseXml (xml){
 
     //松开角色
     self.on("pressup", function(evt){
+        self.drag = false;
         var event = new createjs.Event("character.drop");
         event.x = evt.stageX;
         event.y = evt.stageY;
         event.character = self;
+        self.stage.dispatchEvent(event);
+    })
+
+    self.on("pressmove", function(){
+        if(!self.place) return;
+        self.place.remove();
+        self.place = null;
+        self.scaleX = 1;
+        self.scaleY = 1;
+
+        var event = new createjs.Event("character.remove");
         self.stage.dispatchEvent(event);
     })
 
@@ -362,7 +369,8 @@ function parseXml (xml){
         character.updateCache();
         //character.shape_13.alpha = 0
         this.character = character;
-        character.removeAllEventListeners();
+        character.place = this;
+        // character.removeAllEventListeners();
         return true;
     }
 
