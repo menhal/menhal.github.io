@@ -118,7 +118,7 @@
         var inputBox = new lib.inputBox("synched",0);
         inputBox.setTransform(582.2,113.8,1,1,0,0,0,187.1,42);
 
-        var progress = new lib.progress();
+        var progress = new lib.progressBar_11();
         progress.gotoAndStop(0);
         progress.setTransform(320, 550)
         stage.addChild(progress);
@@ -140,7 +140,7 @@
 
 
         //打乱顺序
-        var index = 0, max = 5, right = 0;
+        var index = 0, max = 11, right = 0;
         var colors = new lib.colors();
         var loading = false;
 
@@ -178,7 +178,7 @@
                 progress.gotoAndStop(index+1);
                 if(index === data.length - 1){
                     setTimeout(function(){
-                        showDouble();
+                        GAME.showStage(2);
                     }, 2000)
                     return;
                 }
@@ -195,41 +195,41 @@
             GAME.say("cn", data[index][0])
         }
 
-        var showDouble = function(){
-            index = 0;
-            stage.removeChild(colorRect);
-            stage.addChild(doubleColorRect);
-            inputText.removeAllEventListeners();
-            progress.gotoAndStop(5);
-
-            var data = colors.createDoubleList(max, 2);
-            inputText.on("textchange", function(evt){
-                if(loading) return;
-                var text= inputText.text;
-                var realText = data[index][0][0]+" "+data[index][0][1];
-                var result = text === realText;
-
-                result ? onRight() : onWrong();
-                if(!result) return;
-                progress.gotoAndStop(index+6);
-                if(index === data.length - 1){
-                    setTimeout(function(){
-                        GAME.showStage(2);
-                    }, 2000)
-                    return;
-                }
-                index ++;
-
-                loading = true;
-                setTimeout(function(){
-                    doubleColorRect.changeColor(data[index][0]);
-                    GAME.say("cn", data[index][0]);
-                    loading = false;
-                }, 2000)
-            });
-            doubleColorRect.changeColor(data[index][0])
-            GAME.say("cn", data[index][0])
-        }
+        // var showDouble = function(){
+        //     index = 0;
+        //     stage.removeChild(colorRect);
+        //     stage.addChild(doubleColorRect);
+        //     inputText.removeAllEventListeners();
+        //     progress.gotoAndStop(5);
+        //
+        //     var data = colors.createDoubleList(max, 2);
+        //     inputText.on("textchange", function(evt){
+        //         if(loading) return;
+        //         var text= inputText.text;
+        //         var realText = data[index][0][0]+" "+data[index][0][1];
+        //         var result = text === realText;
+        //
+        //         result ? onRight() : onWrong();
+        //         if(!result) return;
+        //         progress.gotoAndStop(index+6);
+        //         if(index === data.length - 1){
+        //             setTimeout(function(){
+        //                 GAME.showStage(2);
+        //             }, 2000)
+        //             return;
+        //         }
+        //         index ++;
+        //
+        //         loading = true;
+        //         setTimeout(function(){
+        //             doubleColorRect.changeColor(data[index][0]);
+        //             GAME.say("cn", data[index][0]);
+        //             loading = false;
+        //         }, 2000)
+        //     });
+        //     doubleColorRect.changeColor(data[index][0])
+        //     GAME.say("cn", data[index][0])
+        // }
         showSingle();
     }
 
