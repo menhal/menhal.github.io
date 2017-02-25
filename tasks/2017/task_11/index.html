@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>任务二：表单（二）多个表单项的动态校验</title>
+    <style>
+        *{box-sizing: border-box}
+
+        .Color_warning{
+            color: #ff0000;
+        }
+
+        .Form{
+            margin: 0 120px;
+            font-family: "Microsoft YaHei";
+        }
+
+        .Form-item{
+            zoom: 1;
+            margin-bottom: 25px;
+        }
+
+        .Form-item:after{
+            display: table;
+            clear: both;
+            content: "";
+        }
+
+        .Form-label{
+            float: left;
+            width: 20%;
+            padding-right: 40px;
+            font-size: 22px;
+            margin: 0;
+            text-align: right;
+            color: #333;
+        }
+
+        .Form-input{
+            margin-left: 20%;
+        }
+
+        .Form-input input{
+            padding-left: 25px;
+            width: 100%;
+            height: 64px;
+            line-height: 62px;
+            border: 1px #ccc solid;
+            border-radius: 7px;
+            outline: 0;
+            font-size: 28px;
+        }
+
+        .Form-tip, .Form-error{display: none;}
+
+        .Form-input_active .Form-tip{
+            display: block;
+        }
+        .Form-input_correct {
+
+        }
+        .Form-input_error{
+
+        }
+    </style>
+</head>
+<body>
+<form action="" class="Form">
+
+    <h1 class="Color_warning">表单获得焦点是, 出现规则提示</h1>
+    <div class="Form-item">
+        <h1 class="Form-label">名称</h1>
+        <div class="Form-input">
+            <input type="text">
+            <p class="Form-tip">必填, 长度为4-16个字符</p>
+            <p class="Form-correct">名称正确</p>
+            <p class="Form-error">名称不可用</p>
+        </div>
+    </div>
+
+    <div class="Form-item">
+        <h1 class="Form-label">密码</h1>
+        <div class="Form-input">
+            <input type="text">
+        </div>
+    </div>
+</form>
+<script></script>
+</body>
+</html>
