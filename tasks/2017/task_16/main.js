@@ -22,6 +22,7 @@ domMain.addEventListener("click", function(event){
 })
 
 drawHue();
+drawMain();
 
 function showResult(){
     var hsl = hslText(inputH.value, inputS.value, inputL.value)
