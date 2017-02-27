@@ -95,5 +95,5 @@ function hslToRgb(h, s, l){
 
 function hslToHex(h, s, l) {
     var rgb = hslToRgb(h, s, l);
-    return ("rgb("+rgb[0]+","+rgb[1]+","+rgb[2]+")").colorHex();
+    return ("rgb("+rgb.join(",")+")").colorHex();
 }
