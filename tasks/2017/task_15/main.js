@@ -3,7 +3,7 @@
 
     function Observer(data) {
         this.data = {};
-        for(var key in data){
+        for(let key in data){
             let val = data[key];
             Object.defineProperty(this.data, key, {
                 get : function () {
