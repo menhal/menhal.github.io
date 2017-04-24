@@ -28,11 +28,8 @@
                 },
                 set : function (value) {
                     self.$dispatch(key, value)
-                    if(typeof value === 'object'){
-                        val = objectWalk.call(self, {}, value)
-                    } else {
-                        val = value
-                    }
+                    val = value
+                    objectWalk.call(self, {}, value)
                 }
             });
         }
