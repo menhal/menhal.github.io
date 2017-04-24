@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>正则表达式之入门</title>
+    <script>
+        var regx1 = /^1[3578]\d{9}$/;
+        console.log(regx1.test(18812011232))  // 测试结果应该为 true
+        console.log(regx1.test(18812312))  // 测试结果应该为 false
+        console.log(regx1.test(12345678909))  // 测试结果应该为 false
+
+        var regx2 = /\b([a-zA-Z]+)\b\s+\1\b/;
+        console.log(regx2.test("foo foo bar"))  // 测试结果应该为 true
+        console.log(regx2.test("foo bar foo"))  // 测试结果应该为 false
+        console.log(regx2.test("foo  barbar bar"))  // 测试结果应该为 false
+        console.log(regx2.test("foo -foo foo"))  // 测试结果应该为 false
+    </script>
+</head>
+<body>
+正则表达式之入门
+</body>
+</html>
