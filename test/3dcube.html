@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        img{width: 100%;}
+        .cube-container{
+            position: relative;
+            margin-left: 200px;
+            margin-top: 200px;
+            transform: rotateX(-35deg) rotateY(45deg);
+            transform-style: preserve-3d;
+            animation: rotate 3s ease infinite;
+            transform-origin: 100px 100px;
+        }
+
+        .cube {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            line-height: 200px;
+            font-size: 40px;
+            color: #fff;
+            text-align: center;
+            opacity: 0.5;
+        }
+        .cube1{background-color: red;  transform: rotateX(90deg) translateZ(100px);}
+        .cube2{background-color: blue; transform: rotateX(-90deg) translateZ(100px);}
+        .cube3{background-color: yellow; transform: rotateY(90deg) translateZ(100px)}
+        .cube4{background-color: green; transform: rotateY(-90deg) translateZ(100px)}
+        .cube5{background-color: purple; transform: rotateY(-180deg) translateZ(100px)}
+        .cube6{background-color: orange;transform: translateZ(100px)}
+
+        @keyframes rotate {
+            0% {transform: rotateX(-35deg) rotateY(45deg);}
+            100% {transform: rotateX(-35deg) rotateY(-315deg);}
+        }
+    </style>
+</head>
+<body>
+    <div class="cube-container">
+        <div class="cube cube1">cube1</div>
+        <div class="cube cube2">cube2</div>
+        <div class="cube cube3">cube3</div>
+        <div class="cube cube4">cube4</div>
+        <div class="cube cube5">cube5</div>
+        <div class="cube cube6">cube6</div>
+    </div>
+
+</body>
+</html>

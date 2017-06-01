@@ -2,19 +2,21 @@
     "use strict"
 
     function Observer(data) {
-        this.data = {};
-        objectWalk.call(this, this.data, data)
+        var obj = {};
+        objectWalk.call(obj, obj, data)
 
         var watchList = [];
-        this.$watch = function (key, callback) {
+        obj.$watch = function (key, callback) {
             watchList.push({key:key, callback:callback})
         }
 
-        this.$dispatch = function (key, value) {
+        obj.$dispatch = function (key, value) {
             for(let i in watchList){
-                if(watchList[i].key === key) watchList[i].callback.call(this, value)
+                if(watchList[i].key === key) watchList[i].callback.call(obj, value)
             }
         }
+
+		return obj;
     }
 
     function objectWalk(model, data) {
@@ -27,6 +29,7 @@
                     return val;
                 },
                 set : function (value) {
+					if(value === val) return;
                     self.$dispatch(key, value)
                     val = value
                     objectWalk.call(self, {}, value)
